@@ -1,32 +1,34 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Humanizer
 {
-    /// <summary>
-    /// 
-    /// </summary>
+    /// Provides methods for handling Roman Numerals.
+    /// <author>Jesse C. Slicer</author>
+    /// <email>jslicer@spamcop.net</email>
+    /// <date>2008-10-01</date>
+    /// <summary>Translates Roman numeral strings to integers and vice-versa.</summary>
     public static class RomanNumeralExtensions
     {
         private const int NumberOfRomanNumeralMaps = 13;
 
-        private static readonly Dictionary<string, int> RomanNumerals = new Dictionary<string, int>(NumberOfRomanNumeralMaps)
+        private static readonly IDictionary<string, int> RomanNumerals = new Dictionary<string, int>(NumberOfRomanNumeralMaps)
             {
                 { "M", 1000 },
                 { "CM", 900 },
-                { "D", 500 },
+                { "D",  500 },
                 { "CD", 400 },
-                { "C", 100 },
-                { "XC", 90 },
-                { "L", 50 },
-                { "XL", 40 },
-                { "X", 10 },
-                { "IX", 9 },
-                { "V", 5 },
-                { "IV", 4 },
-                { "I", 1 }
+                { "C",  100 },
+                { "XC",  90 },
+                { "L",   50 },
+                { "XL",  40 },
+                { "X",   10 },
+                { "IX",   9 },
+                { "V",    5 },
+                { "IV",   4 },
+                { "I",    1 }
             };
 
         private static readonly Regex ValidRomanNumeral = new Regex("^(?i:(?=[MDCLXVI])((M{0,3})((C[DM])|(D?C{0,3}))" + "?((X[LC])|(L?XX{0,2})|L)?((I[VX])|(V?(II{0,2}))|V)?))$", RegexOptions.None);
@@ -44,7 +46,7 @@ namespace Humanizer
             input = input.ToUpper().Trim();
             var length = input.Length;
 
-            if (length == 0 || IsInvalidRomanNumeral(input))
+            if ((length == 0) || IsInvalidRomanNumeral(input))
                 throw new ArgumentException("Empty or invalid Roman numeral string.", "input");
 
             var total = 0;
@@ -78,14 +80,14 @@ namespace Humanizer
         /// <returns>Roman number</returns>
         public static string ToRoman(this int input)
         {
-            const int minValue = 1;
-            const int maxValue = 3999;
-            const int maxRomanNumeralLength = 15;
+            const int MinValue = 1;
+            const int MaxValue = 3999;
+            const int MaxRomanNumeralLength = 15;
 
-            if ((input < minValue) || (input > maxValue))
+            if ((input < MinValue) || (input > MaxValue))
                 throw new ArgumentOutOfRangeException();
 
-            var sb = new StringBuilder(maxRomanNumeralLength);
+            var sb = new StringBuilder(MaxRomanNumeralLength);
 
             foreach (var pair in RomanNumerals)
             {
